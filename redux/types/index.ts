@@ -1,0 +1,2 @@
+export const SET_ANIME_LIST = "SET_ANIME_LIST";
+export const SET_SELECTED_ANIME = "SET_SELECTED_ANIME";
