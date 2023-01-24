@@ -44,7 +44,7 @@ const AnimeLists = ({
   setReducerSearchResult,
   setReducerPagination,
 }: AnimeListsProps) => {
-
+  const {searchQuery} = reduxState;
   const [loading, setLoading] = useState<boolean>(false);
 
   const [query, setQuery] = useState<string>("");
@@ -72,16 +72,7 @@ const AnimeLists = ({
     if (searchQuery) setQuery(searchQuery);
     if (searchResult) setAnimesLists(searchResult);
     if (pagination) setPagination(pagination);
-
-    if(query === "") {
-      setQuery("");
-      setAnimesLists([]);
-      setPagination(null);
-      setReducerSearchQuery(null);
-      setReducerSearchResult([]);
-      setReducerPagination(null);
-    };
-  }, [query]);
+  }, []);
 
   const onSearch = async ({ query, page }: SearchAnimeParams) => {
     setLoading(true);
@@ -133,10 +124,10 @@ const AnimeLists = ({
           <div className="loadingSpinner"></div>
           <p className="mt-5">Please wait...</p>
         </div>
-      ) : query && animesLists.length > 0  ? (
+      ) : animesLists.length > 0  ? (
         <div className="mb-20">
           <h2 className="text-2xl font-semibold mt-20">
-            {animesLists.length === 0 ? `Can not found any animes with title "${query}"` : `Search result of "${query}"`}
+            {animesLists.length === 0 ? `Can not found any animes with title "${searchQuery}"` : `Search result of "${searchQuery}"`}
           </h2>
           <div className="flex gap-0 overflow-x-scroll md:grid md:anime-list-grid mt-8 mb-12">
             {animesLists.length > 0 &&
