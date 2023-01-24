@@ -3,7 +3,18 @@
 Tailwind CSS is best used to speed up the development process by writing less code. 
 It comes with a design system that helps maintain consistency across various design requirements like padding, spacing, and so forth; with this, you do not have to worry about creating your design systems.
 
-## Features : 
+## Tools and library : 
+1. Next.js + Typescript 
+  - Next.js provides an integrated TypeScript experience out of the box
+  - Next.js supports TypeScript by default and has built-in types for pages and the API
+
+2. Redux, Redux Thunk, Redux Persist
+  - I used redux to persist or caching the authentication data and anime search results
+  - Why i need to persist the anime search result on redux is because when after user search animes by title, they will get some of the anime options, in case user want to know more details about the anime, user will be direct to the anime details page, and when they go back to the home page, the latest results will keep showing. I think it would be a good UX so they don't need to re-input the title of same keywords all the time they want to find animes.
+
+3. 
+
+## User flow guidence : 
 1. Popular animes list
   - I used CSR fetching method to get the updated animes with highest popularity. So whenever user visit the page, user will get the updated popular animes from the API source. 
   
