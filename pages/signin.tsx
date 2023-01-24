@@ -8,7 +8,7 @@ import { firestore } from "@/lib/firebase/clientApp";
 
 import TextInput from "@/components/ui/TextInput";
 import Notification from "@/components/ui/Notification";
-import { signInValidation, SignInPayload } from '../lib/hooks/useValidation';
+import { signInValidation, SignInPayload } from '@/lib/hooks/useValidation';
 
 type AlertMessage = {
   isError?: boolean;

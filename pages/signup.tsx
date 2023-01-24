@@ -9,6 +9,7 @@ import { firestore } from "@/lib/firebase/clientApp";
 import TextInput from "@/components/ui/TextInput";
 import Notification from "@/components/ui/Notification";
 import { signUpValidation, SignUpPayload } from '../lib/hooks/useValidation';
+import { addDoc, collection } from "firebase/firestore";
 
 type AlertMessage = {
   isError?: boolean;
@@ -37,6 +38,18 @@ const Signup: NextPage = () => {
     return result;
   };
 
+  const addNewUser = async (payload: SignUpPayload) => {
+    try {
+      await addDoc(collection(firestore, "users"), payload);
+    } catch (err) {
+      console.log(err);
+      setAlertMessage({
+        isError: true,
+        title: "Internal Server Error!",
+        text: "Please try again later",
+      });
+    }};
+
   const onSubmit = async() => {
     setAlertMessage(null);
     setLoading(true);
@@ -52,7 +65,7 @@ const Signup: NextPage = () => {
     const { isValid, errors } = formValidation(payload);
     if(isValid) {
       // Submit payload
-      console.log(payload);
+      addNewUser(payload)
     } else {
       // Show errors
       setErrors(errors);
