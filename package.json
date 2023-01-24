@@ -8,12 +8,17 @@
     "test:ci": "jest --ci"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.13",
     "autoprefixer": "^10.4.13",
+    "axios": "^1.2.3",
+    "firebase": "^9.16.0",
     "next": "latest",
     "next-redux-wrapper": "^8.1.0",
     "postcss": "^8.4.21",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.42.1",
+    "react-paginate": "^8.1.4",
     "react-redux": "^8.0.5",
     "recompose": "^0.30.0",
     "redux": "^4.2.0",
