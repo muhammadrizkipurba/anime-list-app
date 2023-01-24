@@ -1,2 +1,4 @@
-export const SET_ANIME_LIST = "SET_ANIME_LIST";
-export const SET_SELECTED_ANIME = "SET_SELECTED_ANIME";
+export const SET_SEARCH_QUERY = "SET_SEARCH_QUERY";
+export const SET_SEARCH_RESULT = "SET_SEARCH_RESULT";
+export const SET_PAGINATION = "SET_PAGINATION";
+export const SET_AUTH = "SET_AUTH";

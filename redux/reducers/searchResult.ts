@@ -1,4 +1,4 @@
-import { SET_ANIME_LIST } from "../types/index";
+import { SET_SEARCH_RESULT } from '../types/index';
 
 type State = AnimeData[] | [];
 
@@ -9,11 +9,11 @@ type Action = {
 
 const initialState: State = [];
 
-const animeListsReducer = (state = initialState, action: Action) => {
+const searchResultReducer =  (state = initialState, action: Action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case SET_ANIME_LIST: {
+    case SET_SEARCH_RESULT: {
       return payload;
     }
     default: {
@@ -22,4 +22,4 @@ const animeListsReducer = (state = initialState, action: Action) => {
   }
 };
 
-export default animeListsReducer;
+export default searchResultReducer;

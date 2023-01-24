@@ -25,7 +25,7 @@ const makeStore = () => {
 
     const persistConfig = {
       key: 'root',
-      whitelist: ['animeLists'], // only counter will be persisted, add other reducers if needed
+      whitelist: ['searchQuery', 'searchResult', 'pagination', 'auth'], // only counter will be persisted, add other reducers if needed
       storage,
     };
 
