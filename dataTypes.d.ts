@@ -134,3 +134,12 @@ type AnimeData = {
   themes: Theme[] | [];
   demographics: Demographic[] | [];
 };
+
+type FavoriteAnime = {
+  id: number;
+};
+
+type UserData = {
+  name: string;
+  favorite_animes: FavoriteAnime[] | [];
+};
