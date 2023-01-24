@@ -81,13 +81,13 @@ const Signup: NextPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4">
+    <div className="max-w-7xl mx-auto px-6">
       <Head>
         <title>Sign up</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="w-full h-[100vh] flex items-center justify-center">
-      <div className="md:w-[500px]">
+      <div className="w-full md:w-[500px]">
         <div className="flex items-center justify-center mb-10">
           <h1 className="text-2xl font-semibold text-center mb-0 mr-4">Sign up</h1>
         </div>
