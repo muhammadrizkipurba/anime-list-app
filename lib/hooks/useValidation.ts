@@ -3,9 +3,12 @@ export type SignInPayload = {
   password: string;
 };
 export type SignUpPayload = {
+  id?: string;
   name: string;
   email: string;
   password: string;
+  password_confirm?: string;
+  favorite_animes: []; // default value = []
 };
 
 export const signInValidation = (payload: SignInPayload) => {
@@ -30,7 +33,7 @@ export const signUpValidation = (payload: SignUpPayload) => {
   let isValid;
   let errors: any = {};
 
-  const { name, email, password } = payload;
+  const { name, email, password, password_confirm } = payload;
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   
   if(!name) errors.name = "Name is required!"
@@ -42,6 +45,10 @@ export const signUpValidation = (payload: SignUpPayload) => {
   };
 
   if(!password) errors.password = "Password is required!"
+  if(!password_confirm) errors.password_confirm = "Please confirm your password"
+  if(password && password_confirm && password !== password_confirm) {
+    errors.password_confirm = "Password does not match!"
+  };
 
   isValid = Object.keys(errors).length === 0;
   return {isValid, errors};

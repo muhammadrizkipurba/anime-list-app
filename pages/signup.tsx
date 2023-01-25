@@ -1,15 +1,17 @@
-import { useState } from "react";
 import { NextPage } from "next";
 import Head from "next/head";
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 import { FieldValues, useForm } from "react-hook-form";
-
-import { firestore } from "@/lib/firebase/clientApp";
+import { useRouter } from 'next/router';
+import { ConnectedProps, connect } from 'react-redux';
 
 import TextInput from "@/components/ui/TextInput";
 import Notification from "@/components/ui/Notification";
-import { signUpValidation, SignUpPayload } from '../lib/hooks/useValidation';
-import { addDoc, collection } from "firebase/firestore";
+import { signUpValidation, SignUpPayload } from '@/lib/hooks/useValidation';
+import { useAuth } from "@/lib/hooks/useAuth";
+import { useUser } from "@/lib/hooks/useUser";
+import { initialState as ReduxState } from "@/redux/reducers/index";
 
 type AlertMessage = {
   isError?: boolean;
@@ -22,50 +24,84 @@ type Errors = {
   name?: string | null;
   email?: string | null;
   password?: string | null;
+  password_confirm?: string | null;
 };
 
-const Signup: NextPage = () => {
-  
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+const Signup = ({reduxState} : PropsFromRedux) => {
+  const { auth } = reduxState;
+  const router = useRouter();
+  const { signUp } = useAuth();
+  const { createUser } = useUser();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<Errors>({name: null, email: null, password: null});
   const [alertMessage, setAlertMessage] = useState<AlertMessage | null>(null);
   
   const { register, getValues, handleSubmit, watch, setValue } = useForm();
-  const [name, email, password] = watch(["name", "email", "password"]);
+  const [name, email, password, password_confirm] = watch(["name", "email", "password", "password_confirm"]);
   
+  useEffect(() => {
+    const { isAuthenticated } = auth;
+    if(isAuthenticated) {
+      router.push("/");
+    };
+
+    return () => {};
+  }, []);
+
   const formValidation = (payload: SignUpPayload) => {
     const result = signUpValidation(payload);
     return result;
   };
 
-  const addNewUser = async (payload: SignUpPayload) => {
-    try {
-      await addDoc(collection(firestore, "users"), payload);
-    } catch (err) {
-      console.log(err);
-      setAlertMessage({
-        isError: true,
-        title: "Internal Server Error!",
-        text: "Please try again later",
-      });
-    }};
-
   const onSubmit = async() => {
     setAlertMessage(null);
     setLoading(true);
-    const {email, password}: FieldValues = getValues();
+    const {name, email, password, password_confirm}: FieldValues = getValues();
 
     const payload: SignUpPayload = {
       name,
       email,
       password,
+      favorite_animes: [] // default value
     };
 
     // Form Validation
-    const { isValid, errors } = formValidation(payload);
+    const { isValid, errors } = formValidation({...payload, password_confirm});
     if(isValid) {
-      // Submit payload
-      addNewUser(payload)
+      // Create new user firebase authentication
+      const response: any = await signUp(payload);
+      if (response && response.uid) {
+        // Save user data to firestore doc
+        await createUser({...payload, id: response.uid}).then(() => {
+          setAlertMessage({
+            isError: false,
+            title: "Signup success",
+            text: "Your email has been registered successfully.",
+          });
+          setTimeout(() => {
+            setLoading(false);
+            router.push("/signin");
+          }, 2000)
+        }).catch(err => {
+          console.log(err);
+          setAlertMessage({
+            isError: true,
+            title: "Internal server error",
+            text: "Please try again later."
+          });
+          setLoading(false);
+        });
+      } else {
+        setAlertMessage({
+          isError: true,
+          title: "Authorization error",
+          text: response,
+        });
+        setLoading(false);
+      }
     } else {
       // Show errors
       setErrors(errors);
@@ -131,8 +167,21 @@ const Signup: NextPage = () => {
             />
           </div>
 
+          <div className="mb-6">
+            <TextInput 
+              id="password_confirm" 
+              type="password" 
+              value={password_confirm} 
+              label="Confirm password" 
+              error={errors?.password_confirm}
+              onChange={onChangeHandler}
+              register={register}
+              disabled={loading}
+            />
+          </div>
+
           {alertMessage && 
-            <div className="mt-10">
+            <div className="my-8">
               <Notification notification={alertMessage} />
             </div>
           }
@@ -168,4 +217,12 @@ const Signup: NextPage = () => {
   );
 };
 
-export default Signup;
+const mapStateToProps = (state: typeof ReduxState) => {
+  return {
+    reduxState: state,
+  };
+};
+
+const connector = connect(mapStateToProps, {});
+
+export default connector(Signup);

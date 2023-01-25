@@ -1,3 +1,4 @@
+import { UserData } from '@/redux/reducers/auth';
 import { SET_SEARCH_QUERY, SET_SEARCH_RESULT, SET_PAGINATION, SET_AUTH } from '../types/index';
 
 type SetSearchQueryPayload = string | null;

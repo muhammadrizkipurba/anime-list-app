@@ -1,6 +1,7 @@
 import { SET_AUTH } from '../types/index';
 
 export type UserData = {
+  id: string;
   name: string;
   email: string;
   favorite_animes: number[] | [];
@@ -23,7 +24,6 @@ const initialState: State = {
 
 const authReducer =  (state = initialState, action: Action) => {
   const { type, payload } = action;
-
   switch (type) {
     case SET_AUTH: {
       return payload;

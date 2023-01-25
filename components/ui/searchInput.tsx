@@ -28,7 +28,7 @@ const SearchInput = ({disabled, searchQuery, setSearchQuery, onSearch}: SearchIn
           onChange={(e) => onChangeHandler(e)}
           disabled={disabled}
         />
-        <button onClick={onSearch} disabled={disabled} className="bg-blue-700 px-8 py-2 text-white rounded-lg w-full md:w-auto">
+        <button onClick={onSearch} disabled={disabled || searchQuery === ""} className="bg-blue-700 px-8 py-2 text-white rounded-lg w-full md:w-auto">
           Search
         </button>
       </div>

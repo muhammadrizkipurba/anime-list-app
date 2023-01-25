@@ -12,5 +12,5 @@ const app = initializeApp( {
   measurementId:process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 });
 
-export const firestore = getFirestore();
+export const db = getFirestore(app);
 export const auth = getAuth(app);
